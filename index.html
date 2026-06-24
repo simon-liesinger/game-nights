@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f1115" />
+  <title>Game Nights</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>🎲</text></svg>" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Shown only if firebase-config.js still has placeholder values -->
+  <div id="setup" class="setup hidden">
+    <div class="setup-card">
+      <h1>🎲 Almost there</h1>
+      <p>This app needs a Firebase project to sync between everyone. It takes ~2 minutes:</p>
+      <ol>
+        <li>Open the <a href="https://console.firebase.google.com" target="_blank" rel="noopener">Firebase console</a> and create a project.</li>
+        <li><strong>Build → Firestore Database → Create database → Start in test mode.</strong></li>
+        <li><strong>Project settings → Your apps → Web (<code>&lt;/&gt;</code>)</strong> and register an app.</li>
+        <li>Copy the <code>firebaseConfig</code> values into <code>firebase-config.js</code>.</li>
+      </ol>
+      <p class="muted">Reload once you've pasted your config.</p>
+    </div>
+  </div>
+
+  <div id="app" class="app hidden">
+    <header class="topbar">
+      <div class="brand">
+        <span class="logo">🎲</span>
+        <div>
+          <h1>Game Nights</h1>
+          <span class="room" id="roomLabel"></span>
+        </div>
+      </div>
+      <div class="me">
+        <label for="nameInput">You</label>
+        <input id="nameInput" type="text" placeholder="Your name" autocomplete="name" maxlength="40" />
+      </div>
+    </header>
+
+    <main>
+      <div class="toolbar">
+        <button id="addBtn" class="primary">+ New game</button>
+        <span id="status" class="status muted">Connecting…</span>
+      </div>
+      <section id="games" class="games"></section>
+      <p id="empty" class="empty hidden">No games planned yet. Add the first one! 🎉</p>
+    </main>
+  </div>
+
+  <dialog id="gameDialog" class="dialog">
+    <form id="gameForm" method="dialog">
+      <h2 id="dialogTitle">New game</h2>
+      <label>Date & time
+        <input name="date" type="datetime-local" required />
+      </label>
+      <label>Game
+        <input name="type" type="text" placeholder="Catan, Poker, BotC…" required maxlength="80" />
+      </label>
+      <div class="row">
+        <label>Min players
+          <input name="minPlayers" type="number" min="1" max="100" value="2" required />
+        </label>
+        <label>Max players
+          <input name="maxPlayers" type="number" min="1" max="100" value="6" required />
+        </label>
+      </div>
+      <label>Location
+        <input name="location" type="text" placeholder="Simon's place, Discord…" maxlength="120" />
+      </label>
+      <div class="dialog-actions">
+        <button type="button" id="cancelBtn" class="ghost">Cancel</button>
+        <button type="submit" class="primary">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
