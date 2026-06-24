@@ -9,12 +9,12 @@
 //  Until you do this the app will show a setup banner instead of running.
 // ─────────────────────────────────────────────────────────────────────────
 export const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID",
+  apiKey: "AIzaSyCPbnXF6UxSa2wPN4RUS3wF-SLrqE5_b0s",
+  authDomain: "board-game-organization.firebaseapp.com",
+  projectId: "board-game-organization",
+  storageBucket: "board-game-organization.firebasestorage.app",
+  messagingSenderId: "633995288694",
+  appId: "1:633995288694:web:d9d5079c4d7a79c3b27f57"
 };
 
 // Everyone using the same ROOM_ID shares the same list of games.
