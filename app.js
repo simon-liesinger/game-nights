@@ -37,13 +37,10 @@ if (!me.name) setTimeout(() => nameInput.focus(), 100);
 
 document.getElementById("roomLabel").textContent = `room: ${ROOM_ID}`;
 
-/* ── Probability scale ───────────────────────────────────────── */
+/* ── Answer scale ────────────────────────────────────────────── */
 const PROBS = [
+  { v: 100, l: "Yes" },
   { v: 0, l: "No" },
-  { v: 25, l: "Unlikely" },
-  { v: 50, l: "Maybe" },
-  { v: 75, l: "Likely" },
-  { v: 100, l: "Yes!" },
 ];
 
 /* ── Rendering ───────────────────────────────────────────────── */
@@ -73,7 +70,6 @@ function render() {
 function renderCard(g) {
   const votes = Object.entries(g.votes || {}).map(([uid, v]) => ({ uid, ...v }));
   const coming = votes.filter((v) => (v.probability ?? 0) >= 50).length;
-  const expected = votes.reduce((s, v) => s + (v.probability ?? 0), 0) / 100;
   const hosts = votes.filter((v) => v.canHost);
   const min = g.minPlayers, max = g.maxPlayers;
 
@@ -91,13 +87,15 @@ function renderCard(g) {
 
   const voterRows = votes
     .sort((a, b) => (b.probability ?? 0) - (a.probability ?? 0))
-    .map((v) => `
-      <div class="voter">
+    .map((v) => {
+      const yes = (v.probability ?? 0) >= 50;
+      return `
+      <div class="voter ${yes ? "yes" : "no"}">
+        <span class="answer">${yes ? "✅ Yes" : "❌ No"}</span>
         <span class="vname">${esc(v.name || "Someone")}</span>
-        <span class="bar"><span style="width:${v.probability ?? 0}%"></span></span>
-        <span class="pct">${v.probability ?? 0}%</span>
         ${v.canHost ? '<span class="badge">🏠 host</span>' : ""}
-      </div>`).join("");
+      </div>`;
+    }).join("");
 
   return `
     <article class="card">
@@ -131,11 +129,16 @@ function renderCard(g) {
 
         <div class="tally">
           <div class="tally-summary">
-            <span><strong>${coming}</strong> likely coming</span>
-            <span>~<strong>${expected.toFixed(1)}</strong> expected</span>
+            <span><strong>${votes.length}</strong> respondent${votes.length === 1 ? "" : "s"}</span>
+            <span><strong>${coming}</strong> coming</span>
             <span><strong>${hosts.length}</strong> can host</span>
           </div>
-          <div class="voters">${voterRows || '<span class="muted">No votes yet.</span>'}</div>
+          ${votes.length
+            ? `<details class="voters-wrap">
+                 <summary>Show respondents</summary>
+                 <div class="voters">${voterRows}</div>
+               </details>`
+            : '<span class="muted">No votes yet.</span>'}
         </div>
       </div>
     </article>`;
